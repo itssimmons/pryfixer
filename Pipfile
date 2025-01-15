@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[scripts]
+pryfixer = "python __main__.py"
+fmt = "black __main__.py __test__/. --color --preview --fast --config .black.toml"
+
+[packages]
+
+[dev-packages]
+black = "*"
+isort = "*"
+
+[requires]
+python_version = "3.12"

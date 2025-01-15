@@ -1,0 +1,10 @@
+__pycache__/
+
+__test__/*
+!__test__/tests.py
+
+.venv/
+
+Pipfile.lock
+
+.DS_Store
