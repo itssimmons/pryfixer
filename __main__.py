@@ -1,74 +1,58 @@
-import sys
+from sys import exit, argv
 from time import time
-import pathlib as path
+from pathlib import Path
+from argparse import ArgumentParser
 
 start_time = time()
-end_time = 'File'
+end_time = "File"
 
 def print_help():
-    print("chname - Change the name of a directory recursively")
-    print("Usage: chname [options]")
+    print(
+        "pryfixer - A simple way to change all the files in a directory blazing fast ⚡️"
+    )
+    print("Usage: pryfixer [options]")
     print("Options:")
-    print("\t--version, -v: Print the version number")
-    print("\t--help, -h: Print this help message")
-    print("\t--dir, -d: The directory to iterate through")
-    print("\t--prefix, -p: The prefix to use before the (--start-at) index")
-    print("\t--start-at, -s: The index to start at")
+    print("\t-h, --help  Print this help message")
+    print("\t-v, --version  Print the version number")
+    print("\t-d, --dir  The directory to iterate through")
+    print("\t-p, --prefix  The prefix to use before the (--begin) index")
+    print("\t-b, --begin  The index to start at")
 
 
 if __name__ == "__main__":
-    ACCEPTED_ARGS = [
-        "--version",
-        "-v",
-        "--help",
-        "-h",
-        "--dir",
-        "-d",
-        "--start-at",
-        "-s",
-    ]
+    parser = ArgumentParser(add_help=False)
+    parser.add_argument("--version", "-v", action="store_true")
+    parser.add_argument("--help", "-h", action="store_true")
+    parser.add_argument("--dir", "-d", type=str, default=None, required=True)
+    parser.add_argument("--prefix", "-p", type=str, default="File", required=False)
+    parser.add_argument("--begin", "-b", type=int, default=1, required=False)
 
-    args = sys.argv[1:]
+    args = parser.parse_args()
+
     count = 0
 
-    start_at: int = int(1)
-    directory: None | str = None
-    prefix: None | str = None
+    begin: int = args.begin
+    directory: str = args.dir
+    prefix: str = args.prefix
 
-    if len(args) == 0:
+    if len(argv[1:]) == 0:
         print("No arguments provided \n")
         print_help()
-        sys.exit(1)
+        exit(1)
 
-    # for arg in args:
-    # 	if (arg not in ACCEPTED_ARGS):
-    # 		print("Invalid argument: " + arg)
-    # 		sys.exit(1)
+    if args.version:
+        print("Pryfixer v0.1.0 [ Python 3.10 ]")
+        exit(0)
 
-    if "--version" in args or "-v" in args:
-        print("chname v0.0.1")
-        sys.exit(0)
-
-    if "--help" in args or "-h" in args:
+    if args.help:
         print_help()
-        sys.exit(0)
+        exit(0)
 
-    if "--dir" in args:
-        i = args.index("--dir")
-        directory = args[i + 1]
-
-    if "--start-at" in args:
-        i = args.index("--start-at")
-        start_at = int(args[i + 1])
-
-    if "--prefix" in args:
-        i = args.index("--prefix")
-        prefix = args[i + 1]
-
-    for item in path.Path(directory).iterdir():
+    for item in Path(directory).iterdir():
         if item.is_file():
-            new_name = f"{prefix}_{start_at}{item.suffix}"
+            new_name = f"{prefix}_{begin}{item.suffix}"
             new_path = item.parent / new_name
+            begin += 1
 
             if new_path.exists():
                 print(f"Skipped: {item.name} => {new_name}")
@@ -77,10 +61,9 @@ if __name__ == "__main__":
             item.rename(new_path)
             print(f"Renamed: {item.name} => {new_name}")
             count += 1
-            start_at += 1
 
     end_time = time()
     elapsed_time = round(end_time - start_time, 2)
 
     print(f"\nRenamed {count} files in {elapsed_time}s ✨")
-    sys.exit(0)
+    exit(0)

@@ -1,2 +1,2 @@
 # Pryfixer
-Simple python script to rename your files in batch and blasing fast ⚡️
+A simple way to change all the files in a directory blazing fast ⚡️
