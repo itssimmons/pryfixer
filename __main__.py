@@ -4,7 +4,6 @@ from pathlib import Path
 from argparse import ArgumentParser
 
 start_time = time()
-end_time = "File"
 
 def print_help():
     print(
