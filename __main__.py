@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(add_help=False)
     parser.add_argument("--version", "-v", action="store_true")
     parser.add_argument("--help", "-h", action="store_true")
-    parser.add_argument("--dir", "-d", default=None, required=True)
+    parser.add_argument("--dir", "-d", default=None, required=False)
     parser.add_argument("--prefix", "-p", default="File", required=False)
     parser.add_argument("--begin", "-b", type=int, default=1, required=False)
     parser.add_argument("--pad_end", type=int, default=0, required=False)
@@ -52,6 +52,12 @@ if __name__ == "__main__":
     if args.help:
         print_help()
         exit(0)
+
+    if args.dir is None:
+        print("No directory provided \n")
+        print("Usage: pryfixer [options]")
+        print("pryfixer --dir|-d <directory>")
+        exit(1)
 
     for item in Path(directory).iterdir():
         if item.is_file():
