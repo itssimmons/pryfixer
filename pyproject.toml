@@ -1,2 +1,2 @@
-s[tool.isort]
+[tool.isort]
 profile = "black"
